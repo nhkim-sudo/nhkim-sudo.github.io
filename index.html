@@ -578,6 +578,36 @@
         <!-- 공유 -->
         <div class="share-section">
             <button class="share-btn" onclick="shareInvitation()">초대장 공유하기</button>
+            <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
+
+        <script>
+        Kakao.init("fa42a6372a0310382d901959e6dbb769"); // 카카오 개발자 콘솔에서 복사
+
+        document.getElementById("kakao-share-btn").addEventListener("click", function () {
+            Kakao.Share.sendDefault({
+            objectType: "feed",
+            content: {
+                title: "이연진 ♥ 김나현 결혼합니다",
+                description: "소중한 날에 초대합니다",
+                imageUrl: "https://github.com/nhkim-sudo/nhkim-sudo.github.io/blob/main/assets/img/kakaotalk.png",
+                link: {
+                mobileWebUrl: "https://nhkim-sudo.github.io/",
+                webUrl: "https://nhkim-sudo.github.io/"
+                }
+            },
+            buttons: [
+                {
+                title: "청첩장 보기",
+                link: {
+                    mobileWebUrl: "https://nhkim-sudo.github.io/",
+                    webUrl: "https://nhkim-sudo.github.io/"
+                }
+                }
+            ]
+            });
+        });
+        </script>
+
         </div>
 
         <!-- 푸터 -->
