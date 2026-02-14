@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
-    <!-- 카카오 SDK 로드 -->
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
     <style>
         :root {
@@ -218,6 +217,7 @@
             font-size: 2rem;
         }
 
+        /* 계좌 정보 섹션 */
         .account-section {
             padding: 60px 40px;
             background: var(--light);
@@ -225,46 +225,100 @@
 
         .account-grid {
             display: grid;
-            gap: 30px;
+            gap: 15px;
             margin-top: 30px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .account-box {
+        /* 토글 박스 */
+        .account-toggle-box {
             background: var(--white);
-            padding: 30px;
-            border-radius: 2px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        .account-label {
+        .account-toggle-header {
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+            user-select: none;
+        }
+
+        .account-toggle-header:hover {
+            background: var(--light);
+        }
+
+        .account-toggle-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .account-toggle-arrow {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            transition: transform 0.3s;
+        }
+
+        .account-toggle-box.active .account-toggle-arrow {
+            transform: rotate(180deg);
+        }
+
+        .account-toggle-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .account-toggle-box.active .account-toggle-content {
+            max-height: 1000px;
+        }
+
+        .account-toggle-inner {
+            padding: 0 25px 25px;
+        }
+
+        /* 계좌 아이템 */
+        .account-item {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--divider);
+        }
+
+        .account-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .account-owner {
             font-size: 0.85rem;
             color: var(--secondary);
-            margin-bottom: 20px;
-            font-weight: 400;
-        }
-
-        .account-details {
-            margin-bottom: 10px;
-        }
-
-        .account-bank {
-            font-size: 0.9rem;
-            color: var(--primary);
             margin-bottom: 8px;
         }
 
+        .account-bank {
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
         .account-number {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--primary);
             font-weight: 400;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
 
-        .account-holder {
-            font-size: 0.85rem;
-            color: var(--secondary);
-            margin-top: 8px;
+        .account-number-text {
+            flex: 1;
         }
 
         .copy-btn {
@@ -272,11 +326,12 @@
             border: 1px solid var(--divider);
             color: var(--secondary);
             padding: 6px 12px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Noto Sans KR', sans-serif;
             border-radius: 2px;
+            white-space: nowrap;
         }
 
         .copy-btn:hover {
@@ -373,6 +428,14 @@
                 padding: 14px 30px;
                 font-size: 0.85rem;
                 margin: 5px 3px;
+            }
+
+            .account-toggle-header {
+                padding: 18px 20px;
+            }
+
+            .account-toggle-inner {
+                padding: 0 20px 20px;
             }
         }
 
@@ -518,30 +581,85 @@
             </div>
         </div>
 
+        <!-- 계좌 정보 토글 -->
         <div class="account-section fade-in">
             <div class="section-title">ACCOUNT</div>
             <div class="account-grid">
-                <div class="account-box">
-                    <div class="account-label">신랑측 계좌번호</div>
-                    <div class="account-details">
-                        <div class="account-bank">카카오뱅크</div>
-                        <div class="account-number">
-                            <span>1234-56-789012</span>
-                            <button class="copy-btn" onclick="copyAccount('1234-56-789012')">복사</button>
+                <!-- 신랑측 계좌 정보 -->
+                <div class="account-toggle-box">
+                    <div class="account-toggle-header" onclick="toggleAccount(this)">
+                        <div class="account-toggle-title">신랑측 계좌번호</div>
+                        <div class="account-toggle-arrow">^</div>
+                    </div>
+                    <div class="account-toggle-content">
+                        <div class="account-toggle-inner">
+                            <!-- 신랑 본인 -->
+                            <div class="account-item">
+                                <div class="account-owner">이연진</div>
+                                <div class="account-bank">IBK기업 287-307201-04-102</div>
+                                <div class="account-number">
+                                    <span class="account-number-text">287-307201-04-102</span>
+                                    <button class="copy-btn" onclick="copyAccount('287-307201-04-102')">복사</button>
+                                </div>
+                            </div>
+                            <!-- 아버지 -->
+                            <div class="account-item">
+                                <div class="account-owner">이아빠</div>
+                                <div class="account-bank">KB국민 221702-04-064752</div>
+                                <div class="account-number">
+                                    <span class="account-number-text">221702-04-064752</span>
+                                    <button class="copy-btn" onclick="copyAccount('221702-04-064752')">복사</button>
+                                </div>
+                            </div>
+                            <!-- 어머니 -->
+                            <div class="account-item">
+                                <div class="account-owner">박엄마</div>
+                                <div class="account-bank">KB국민 221252-04-064724</div>
+                                <div class="account-number">
+                                    <span class="account-number-text">221252-04-064724</span>
+                                    <button class="copy-btn" onclick="copyAccount('221252-04-064724')">복사</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="account-holder">예금주: 이연진</div>
                     </div>
                 </div>
 
-                <div class="account-box">
-                    <div class="account-label">신부측 계좌번호</div>
-                    <div class="account-details">
-                        <div class="account-bank">토스뱅크</div>
-                        <div class="account-number">
-                            <span>9876-54-321098</span>
-                            <button class="copy-btn" onclick="copyAccount('9876-54-321098')">복사</button>
+                <!-- 신부측 계좌 정보 -->
+                <div class="account-toggle-box">
+                    <div class="account-toggle-header" onclick="toggleAccount(this)">
+                        <div class="account-toggle-title">신부측 계좌번호</div>
+                        <div class="account-toggle-arrow">^</div>
+                    </div>
+                    <div class="account-toggle-content">
+                        <div class="account-toggle-inner">
+                            <!-- 신부 본인 -->
+                            <div class="account-item">
+                                <div class="account-owner">김나현</div>
+                                <div class="account-bank">우리은행 1002-945-239906</div>
+                                <div class="account-number">
+                                    <span class="account-number-text">1002-945-239906</span>
+                                    <button class="copy-btn" onclick="copyAccount('1002-945-239906')">복사</button>
+                                </div>
+                            </div>
+                            <!-- 아버지 -->
+                            <div class="account-item">
+                                <div class="account-owner">김성진</div>
+                                <div class="account-bank">부산은행 112-2320-7392-03</div>
+                                <div class="account-number">
+                                    <span class="account-number-text">112-2320-7392-03</span>
+                                    <button class="copy-btn" onclick="copyAccount('112-2320-7392-03')">복사</button>
+                                </div>
+                            </div>
+                            <!-- 어머니 -->
+                            <div class="account-item">
+                                <div class="account-owner">권자원</div>
+                                <div class="account-bank">우리은행 1334-567-890123</div>
+                                <div class="account-number">
+                                    <span class="account-number-text">1334-567-890123</span>
+                                    <button class="copy-btn" onclick="copyAccount('1334-567-890123')">복사</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="account-holder">예금주: 김나현</div>
                     </div>
                 </div>
             </div>
@@ -564,43 +682,58 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // ⚠️ 카카오 디벨로퍼스에서 받은 JavaScript 키를 여기에 넣으세요!
-        const KAKAO_API_KEY = '1f71b7af19d98400b9ac5dd73c9ac62f'; // 실제 키로 교체!
-
         // 카카오 SDK 초기화
+        const KAKAO_API_KEY = ''; // 실제 키로 교체!
+
         if (typeof Kakao !== 'undefined' && !Kakao.isInitialized()) {
             Kakao.init(KAKAO_API_KEY);
             console.log('Kakao SDK 초기화:', Kakao.isInitialized());
         }
 
-        // 카카오톡 공유 버튼
+        // 토글 함수
+        function toggleAccount(header) {
+            const box = header.parentElement;
+            box.classList.toggle('active');
+        }
+
+        // 카카오톡 공유
         document.getElementById('kakao-share-btn').addEventListener('click', function() {
             if (typeof Kakao === 'undefined') {
                 showToast('카카오 SDK 로드 실패');
                 return;
             }
 
-            Kakao.Share.sendDefault({
-                objectType: 'feed',
-                content: {
-                    title: '이연진 ♥ 김나현 결혼합니다',
-                    description: '2026.11.07 토요일 오후 12시 20분\n신도림 웨딩시티 11층 그랜드볼룸',
-                    imageUrl: 'https://raw.githubusercontent.com/nhkim-sudo/nhkim-sudo.github.io/main/assets/img/kakaotalk.png',
-                    link: {
-                        mobileWebUrl: 'https://nhkim-sudo.github.io/',
-                        webUrl: 'https://nhkim-sudo.github.io/'
-                    }
-                },
-                buttons: [
-                    {
-                        title: '청첩장 보기',
+            if (!Kakao.isInitialized()) {
+                showToast('카카오 SDK 초기화 안됨');
+                return;
+            }
+
+            try {
+                Kakao.Share.sendDefault({
+                    objectType: 'feed',
+                    content: {
+                        title: '이연진 ♥ 김나현 결혼합니다',
+                        description: '2026.11.07 토요일 오후 12시 20분\n신도림 웨딩시티 11층 그랜드볼룸',
+                        imageUrl: 'https://via.placeholder.com/800x400/8B7355/FFFFFF?text=Wedding+Invitation',
                         link: {
                             mobileWebUrl: 'https://nhkim-sudo.github.io/',
                             webUrl: 'https://nhkim-sudo.github.io/'
                         }
-                    }
-                ]
-            });
+                    },
+                    buttons: [
+                        {
+                            title: '청첩장 보기',
+                            link: {
+                                mobileWebUrl: 'https://nhkim-sudo.github.io/',
+                                webUrl: 'https://nhkim-sudo.github.io/'
+                            }
+                        }
+                    ]
+                });
+            } catch (error) {
+                console.error('카카오톡 공유 에러:', error);
+                showToast('공유 실패');
+            }
         });
 
         // 계좌번호 복사
