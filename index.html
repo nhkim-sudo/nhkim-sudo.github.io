@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="이연진 ♥ 김나현의 결혼식에 초대합니다">
     <meta property="og:title" content="나현 ❤️ 연진">
-    <meta property="og:description" content="2025년 5월 17일 토요일 오후 2시 30분">
+    <meta property="og:description" content="2026년 11월 7일 토요일 오후 12시 20분">
     <title>나현 ❤️ 연진</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- 카카오 SDK 로드 -->
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
     <style>
         :root {
             --primary: #2C3333;
@@ -41,7 +43,6 @@
             min-height: 100vh;
         }
 
-        /* 헤더 - 심플하고 우아하게 */
         .header {
             padding: 80px 40px 60px;
             text-align: center;
@@ -80,7 +81,6 @@
             margin-top: 40px;
         }
 
-        /* 메인 이미지 영역 */
         .main-image {
             width: 100%;
             height: 500px;
@@ -100,7 +100,6 @@
             object-fit: cover;
         }
 
-        /* 초대 메시지 */
         .invitation-message {
             padding: 60px 40px;
             text-align: center;
@@ -123,7 +122,6 @@
             font-weight: 300;
         }
 
-        /* 구분선 */
         .divider-line {
             width: 1px;
             height: 40px;
@@ -131,7 +129,6 @@
             margin: 0 auto;
         }
 
-        /* 정보 섹션 */
         .info-section {
             padding: 60px 40px;
             background: var(--white);
@@ -178,46 +175,11 @@
             font-weight: 400;
         }
 
-        /* 지도 */
         .map-section {
             padding: 60px 40px;
             background: var(--light);
         }
 
-        .map-container {
-            width: 100%;
-            height: 300px;
-            background: #E8E8E8;
-            border-radius: 2px;
-            overflow: hidden;
-            margin-top: 30px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .map-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            color: var(--secondary);
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .map-placeholder:hover {
-            background: #DEDEDE;
-        }
-
-        .map-placeholder::before {
-            content: "📍";
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        /* 갤러리 */
         .gallery-section {
             padding: 60px 40px;
             background: var(--white);
@@ -256,7 +218,6 @@
             font-size: 2rem;
         }
 
-        /* 계좌 정보 */
         .account-section {
             padding: 60px 40px;
             background: var(--light);
@@ -324,7 +285,6 @@
             border-color: var(--primary);
         }
 
-        /* 공유 버튼 */
         .share-section {
             padding: 40px;
             text-align: center;
@@ -335,7 +295,7 @@
             background: var(--primary);
             color: var(--white);
             border: none;
-            padding: 16px 50px;
+            padding: 16px 40px;
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s;
@@ -343,13 +303,22 @@
             font-weight: 400;
             letter-spacing: 1px;
             border-radius: 2px;
+            margin: 0 5px;
         }
 
         .share-btn:hover {
             background: var(--accent);
         }
 
-        /* 푸터 */
+        .share-btn.kakao {
+            background: #FEE500;
+            color: #3C1E1E;
+        }
+
+        .share-btn.kakao:hover {
+            background: #FDD835;
+        }
+
         .footer {
             padding: 50px 40px;
             text-align: center;
@@ -363,7 +332,6 @@
             opacity: 0.8;
         }
 
-        /* 토스트 */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -385,7 +353,6 @@
             opacity: 1;
         }
 
-        /* 반응형 */
         @media (max-width: 480px) {
             .header {
                 padding: 60px 30px 50px;
@@ -401,9 +368,14 @@
             .account-section {
                 padding: 50px 30px;
             }
+
+            .share-btn {
+                padding: 14px 30px;
+                font-size: 0.85rem;
+                margin: 5px 3px;
+            }
         }
 
-        /* 페이드인 애니메이션 */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -418,12 +390,13 @@
         .fade-in {
             animation: fadeIn 0.8s ease-out;
         }
-        /* 기존 스타일에 추가 */
-        .map-section .my-3 {
+
+        .my-3 {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px; /* 아이콘 사이 간격 */
+            gap: 15px;
+            margin: 20px 0;
         }
 
         .map-icon {
@@ -432,17 +405,19 @@
             object-fit: contain;
             cursor: pointer;
             transition: all 0.3s ease;
-            border-radius: 8px; /* 둥근 모서리 */
+            border-radius: 8px;
             padding: 8px;
             background: white;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
+
         @media (max-width: 480px) {
             .map-icon {
                 width: 50px;
                 height: 50px;
             }
         }
+
         .map-icon:hover {
             transform: translateY(-4px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -451,7 +426,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- 헤더 -->
         <div class="header fade-in">
             <div class="header-date">2026. 11. 7. SAT</div>
             <div class="header-names">
@@ -464,13 +438,10 @@
             </div>
         </div>
 
-        <!-- 메인 이미지 -->
         <div class="main-image">
-            <!-- 실제 이미지로 교체하려면: <img src="images/main.jpg" alt="메인 이미지"> -->
             <div>MAIN IMAGE</div>
         </div>
 
-        <!-- 초대 메시지 -->
         <div class="invitation-message fade-in">
             <div class="invitation-title">초대합니다</div>
             <div class="invitation-text">
@@ -486,7 +457,6 @@
 
         <div class="divider-line"></div>
 
-        <!-- 일정 및 장소 -->
         <div class="info-section fade-in">
             <div class="section-title">WEDDING DAY</div>
             <div class="info-grid">
@@ -509,7 +479,6 @@
             </div>
         </div>
 
-        <!-- 지도 -->
         <div class="map-section">
             <div class="section-title">오시는 길</div>
             <div class="col-md-12">
@@ -528,16 +497,20 @@
                     </a>
                 </div>
                 <div class="my-3">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3165.0371009147266!2d126.89021849999997!3d37.5070431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357c9e6937008aa5%3A0x264f4474edc5342a!2z7Juo65Sp7Iuc7YuwIOyLoOuPhOumvOygkA!5e0!3m2!1sko!2skr!4v1771068731456!5m2!1sko!2skr" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>  
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3165.0371009147266!2d126.89021849999997!3d37.5070431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357c9e6937008aa5%3A0x264f4474edc5342a!2z7Juo65Sp7Iuc7YuwIOyLoOuPhOumvOygkA!5e0!3m2!1sko!2skr!4v1771068731456!5m2!1sko!2skr" 
+                            width="100%" 
+                            height="400" 
+                            frameborder="0" 
+                            style="border:0; border-radius: 8px;" 
+                            allowfullscreen>
+                    </iframe>  
                 </div>
             </div>
         </div>
 
-        <!-- 갤러리 -->
         <div class="gallery-section fade-in">
             <div class="section-title">GALLERY</div>
             <div class="gallery-grid">
-                <!-- 실제 사진으로 교체: <div class="gallery-item"><img src="images/photo1.jpg"></div> -->
                 <div class="gallery-item placeholder">01</div>
                 <div class="gallery-item placeholder">02</div>
                 <div class="gallery-item placeholder">03</div>
@@ -545,7 +518,6 @@
             </div>
         </div>
 
-        <!-- 계좌 정보 -->
         <div class="account-section fade-in">
             <div class="section-title">ACCOUNT</div>
             <div class="account-grid">
@@ -575,51 +547,62 @@
             </div>
         </div>
 
-        <!-- 공유 -->
         <div class="share-section">
-            <button class="share-btn" onclick="shareInvitation()">초대장 공유하기</button>
-            <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
-
-        <script>
-        Kakao.init("fa42a6372a0310382d901959e6dbb769"); // 카카오 개발자 콘솔에서 복사
-
-        document.getElementById("kakao-share-btn").addEventListener("click", function () {
-            Kakao.Share.sendDefault({
-            objectType: "feed",
-            content: {
-                title: "이연진 ♥ 김나현 결혼합니다",
-                description: "소중한 날에 초대합니다",
-                imageUrl: "https://github.com/nhkim-sudo/nhkim-sudo.github.io/blob/main/assets/img/kakaotalk.png",
-                link: {
-                mobileWebUrl: "https://nhkim-sudo.github.io/",
-                webUrl: "https://nhkim-sudo.github.io/"
-                }
-            },
-            buttons: [
-                {
-                title: "청첩장 보기",
-                link: {
-                    mobileWebUrl: "https://nhkim-sudo.github.io/",
-                    webUrl: "https://nhkim-sudo.github.io/"
-                }
-                }
-            ]
-            });
-        });
-        </script>
-
+            <button class="share-btn kakao" id="kakao-share-btn">
+                카카오톡 공유
+            </button>
+            <button class="share-btn" onclick="shareInvitation()">
+                링크 공유
+            </button>
         </div>
 
-        <!-- 푸터 -->
         <div class="footer">
             <div class="footer-text">Thank you</div>
         </div>
     </div>
 
-    <!-- 토스트 -->
     <div class="toast" id="toast"></div>
 
     <script>
+        // ⚠️ 카카오 디벨로퍼스에서 받은 JavaScript 키를 여기에 넣으세요!
+        const KAKAO_API_KEY = 'fa42a6372a0310382d901959e6dbb769'; // 실제 키로 교체!
+
+        // 카카오 SDK 초기화
+        if (typeof Kakao !== 'undefined' && !Kakao.isInitialized()) {
+            Kakao.init(KAKAO_API_KEY);
+            console.log('Kakao SDK 초기화:', Kakao.isInitialized());
+        }
+
+        // 카카오톡 공유 버튼
+        document.getElementById('kakao-share-btn').addEventListener('click', function() {
+            if (typeof Kakao === 'undefined') {
+                showToast('카카오 SDK 로드 실패');
+                return;
+            }
+
+            Kakao.Share.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: '이연진 ♥ 김나현 결혼합니다',
+                    description: '2026년 11월 7일 토요일 오후 12시 20분\n신도림 웨딩시티 11층 그랜드볼룸',
+                    imageUrl: 'https://raw.githubusercontent.com/nhkim-sudo/nhkim-sudo.github.io/main/assets/img/kakaotalk.png',
+                    link: {
+                        mobileWebUrl: 'https://nhkim-sudo.github.io/',
+                        webUrl: 'https://nhkim-sudo.github.io/'
+                    }
+                },
+                buttons: [
+                    {
+                        title: '청첩장 보기',
+                        link: {
+                            mobileWebUrl: 'https://nhkim-sudo.github.io/',
+                            webUrl: 'https://nhkim-sudo.github.io/'
+                        }
+                    }
+                ]
+            });
+        });
+
         // 계좌번호 복사
         function copyAccount(accountNumber) {
             navigator.clipboard.writeText(accountNumber).then(() => {
@@ -635,14 +618,7 @@
             });
         }
 
-        // 지도 열기
-        function openMap() {
-            const address = '서울시 강남구 테헤란로 123';
-            const kakaoMapUrl = `https://map.kakao.com/link/search/${encodeURIComponent(address)}`;
-            window.open(kakaoMapUrl, '_blank');
-        }
-
-        // 공유
+        // 링크 공유
         function shareInvitation() {
             if (navigator.share) {
                 navigator.share({
@@ -678,7 +654,7 @@
             }, 2500);
         }
 
-        // 페이드인 효과
+        // 페이드인
         window.addEventListener('load', () => {
             const elements = document.querySelectorAll('.fade-in');
             elements.forEach((el, index) => {
