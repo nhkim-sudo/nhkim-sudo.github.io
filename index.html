@@ -566,7 +566,6 @@
         /* 달력 섹션 */
         .calendar-box {
             margin-top: 40px;
-            margin-bottom: 30px;
             padding: 25px 20px;
             background: var(--light);
             border-radius: 10px;
@@ -625,6 +624,58 @@
 
         .calendar-day.empty {
             visibility: hidden;
+        }
+        /* 디데이 박스 */
+        .dday-box {
+            margin-top: 35px;
+            margin-bottom: 25px;
+            padding: 25px 20px;
+            background: var(--light);
+            border-radius: 10px;
+            text-align: center;
+            max-width: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .dday-timer {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .dday-item {
+            text-align: center;
+        }
+
+        .dday-label {
+            font-size: 0.75rem;
+            color: var(--secondary);
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .dday-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .dday-message {
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 400;
+        }
+
+        .dday-message strong {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .dday-heart {
+            color: #d94a4a;
+            font-weight: 700;
         }
 
     </style>
@@ -724,6 +775,30 @@
                 <div class="calendar-day empty"></div>
             </div>
         </div>
+        <div class="dday-box">
+        <div class="dday-timer">
+            <div class="dday-item">
+                <div class="dday-label">DAYS</div>
+                <div class="dday-value" id="dday-days">0</div>
+            </div>
+            <div class="dday-item">
+                <div class="dday-label">HOUR</div>
+                <div class="dday-value" id="dday-hours">0</div>
+            </div>
+            <div class="dday-item">
+                <div class="dday-label">MIN</div>
+                <div class="dday-value" id="dday-minutes">0</div>
+            </div>
+            <div class="dday-item">
+                <div class="dday-label">SEC</div>
+                <div class="dday-value" id="dday-seconds">0</div>
+            </div>
+        </div>
+
+        <div class="dday-message" id="dday-message">
+            두현 <span class="dday-heart">❤</span> 하나의 결혼식이 <strong>0일</strong> 남았습니다.
+        </div>
+    </div>
 
             <div class="info-grid">                
                 <div class="info-row">
@@ -1082,6 +1157,57 @@
                 fallbackShare();
             }
         }
+        // 결혼식 날짜 (한국시간 기준)
+        function updateDDay() {
+            const weddingDate = new Date("2026-11-07T12:20:00+09:00");
+            const now = new Date();
+
+            const diff = weddingDate - now; // 미래면 +, 지나면 -
+
+            const daysEl = document.getElementById("dday-days");
+            const hoursEl = document.getElementById("dday-hours");
+            const minutesEl = document.getElementById("dday-minutes");
+            const secondsEl = document.getElementById("dday-seconds");
+            const messageEl = document.getElementById("dday-message");
+
+            // 날짜가 남았을 때 (D-)
+            if (diff > 0) {
+                const totalSeconds = Math.floor(diff / 1000);
+
+                const days = Math.floor(totalSeconds / (3600 * 24));
+                const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+
+                daysEl.textContent = days;
+                hoursEl.textContent = String(hours).padStart(2, "0");
+                minutesEl.textContent = String(minutes).padStart(2, "0");
+                secondsEl.textContent = String(seconds).padStart(2, "0");
+
+                messageEl.innerHTML = `연진 <span class="dday-heart">❤</span> 나현의 결혼식이 <strong>${days}일</strong> 남았습니다.`;
+            }
+            // 날짜가 지났을 때 (D+)
+            else {
+                const passedSeconds = Math.floor(Math.abs(diff) / 1000);
+
+                const days = Math.floor(passedSeconds / (3600 * 24));
+                const hours = Math.floor((passedSeconds % (3600 * 24)) / 3600);
+                const minutes = Math.floor((passedSeconds % 3600) / 60);
+                const seconds = passedSeconds % 60;
+
+                daysEl.textContent = days;
+                hoursEl.textContent = String(hours).padStart(2, "0");
+                minutesEl.textContent = String(minutes).padStart(2, "0");
+                secondsEl.textContent = String(seconds).padStart(2, "0");
+
+                messageEl.innerHTML = `연진 <span class="dday-heart">❤</span> 나현의 결혼식이 <strong>+${days}일</strong> 지났습니다.`;
+            }
+        }
+
+        // 1초마다 업데이트
+        updateDDay();
+        setInterval(updateDDay, 1000);
+
 
         function fallbackShare() {
             const url = window.location.href;
