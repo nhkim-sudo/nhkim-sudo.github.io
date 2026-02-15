@@ -587,9 +587,10 @@
         .calendar-days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 12px;
+            gap: 10px;
             justify-items: center;
             align-items: center;
+            width: 100%;
         }
 
         .calendar-weekdays div {
@@ -599,8 +600,8 @@
         }
 
         .calendar-day {
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -624,6 +625,27 @@
 
         .calendar-day.empty {
             visibility: hidden;
+        }
+        /* 모바일에서 자동 축소 */
+        @media (max-width: 480px) {
+            .calendar-box {
+                padding: 20px 15px;
+            }
+
+            .calendar-weekdays,
+            .calendar-days {
+                gap: 6px; /* 모바일에서는 gap 줄이기 */
+            }
+
+            .calendar-weekdays div {
+                font-size: 0.7rem;
+            }
+
+            .calendar-day {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
+            }
         }
         /* 디데이 박스 */
         .dday-box {
