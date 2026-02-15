@@ -563,6 +563,69 @@
         .fade-in {
             animation: fadeIn 0.8s ease-out;
         }
+        /* 달력 섹션 */
+        .calendar-box {
+            margin-top: 40px;
+            padding: 25px 20px;
+            background: var(--light);
+            border-radius: 10px;
+            max-width: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .calendar-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .calendar-weekdays,
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .calendar-weekdays div {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .calendar-day {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 50%;
+            color: var(--primary);
+        }
+
+        .calendar-day.sunday {
+            color: #d94a4a;
+            font-weight: 600;
+        }
+
+        .calendar-day.selected {
+            background: var(--accent);
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .calendar-day.empty {
+            visibility: hidden;
+        }
+
     </style>
 </head>
 <body>
@@ -600,10 +663,71 @@
 
         <div class="info-section fade-in">
             <div class="section-title">WEDDING DAY</div>
-            <div class="info-grid">
+            <div class="calendar-box">
+            <div class="calendar-title">2026년 11월</div>
+
+            <div class="calendar-weekdays">
+                <div>일</div>
+                <div>월</div>
+                <div>화</div>
+                <div>수</div>
+                <div>목</div>
+                <div>금</div>
+                <div>토</div>
+            </div>
+
+            <br>
+
+            <div class="calendar-days">
+                <!-- 2026년 11월 1일은 일요일 시작 -->
+                <div class="calendar-day sunday">1</div>
+                <div class="calendar-day">2</div>
+                <div class="calendar-day">3</div>
+                <div class="calendar-day">4</div>
+                <div class="calendar-day">5</div>
+                <div class="calendar-day">6</div>
+                <div class="calendar-day selected">7</div>
+
+                <div class="calendar-day sunday">8</div>
+                <div class="calendar-day">9</div>
+                <div class="calendar-day">10</div>
+                <div class="calendar-day">11</div>
+                <div class="calendar-day">12</div>
+                <div class="calendar-day">13</div>
+                <div class="calendar-day">14</div>
+
+                <div class="calendar-day sunday">15</div>
+                <div class="calendar-day">16</div>
+                <div class="calendar-day">17</div>
+                <div class="calendar-day">18</div>
+                <div class="calendar-day">19</div>
+                <div class="calendar-day">20</div>
+                <div class="calendar-day">21</div>
+
+                <div class="calendar-day sunday">22</div>
+                <div class="calendar-day">23</div>
+                <div class="calendar-day">24</div>
+                <div class="calendar-day">25</div>
+                <div class="calendar-day">26</div>
+                <div class="calendar-day">27</div>
+                <div class="calendar-day">28</div>
+
+                <div class="calendar-day sunday">29</div>
+                <div class="calendar-day">30</div>
+
+                <!-- 빈칸 (정렬 유지용) -->
+                <div class="calendar-day empty"></div>
+                <div class="calendar-day empty"></div>
+                <div class="calendar-day empty"></div>
+                <div class="calendar-day empty"></div>
+                <div class="calendar-day empty"></div>
+            </div>
+        </div>
+
+            <div class="info-grid">                
                 <div class="info-row">
                     <div class="info-label">일시</div>
-                    <div class="info-value">2026년 11월 7일 토요일 오후 12시 20분</div>
+                    <div class="info-value">2026년 11월 7일 토요일<br> 오후 12시 20분</div>
                 </div>
                 <div class="info-row">
                     <div class="info-label">장소</div>
@@ -615,7 +739,7 @@
                 </div>
                 <div class="info-row">
                     <div class="info-label">연락처</div>
-                    <div class="info-value">신랑 010-3730-1949<br>신부 010-5609-7587</div>
+                    <div class="info-value">신랑 이연진 010-3730-1949<br>신부 김나현 010-5609-7587</div>
                 </div>
             </div>
         </div>
@@ -724,8 +848,7 @@
                         자가용
                     </div>
                     <div class="transport-details">
-                        <div class="transport-line">신도림 테크노마트 건물 주차장 이용</div>
-                        <div class="transport-line">주차 후 건물 내부 엘리베이터 이용</div>
+                        <div class="transport-line">신도림 테크노마트 건물 주차장 이용</div>                        
                         <div class="transport-line">3시간 주차 무료</div>
                     </div>
                 </div>
@@ -792,15 +915,15 @@
                         <div class="account-toggle-inner">
                             <!-- 신부 본인 -->
                             <div class="account-item">
-                                <div class="account-owner">이다영</div>
+                                <div class="account-owner">김나현</div>
                                 <div class="account-info-row">
-                                    <div class="account-bank-number">카카오뱅크 3333-02-8974824</div>
-                                    <button class="copy-btn" onclick="copyAccount('3333-02-8974824')">복사</button>
+                                    <div class="account-bank-number">우리은행 1002-945-239906</div>
+                                    <button class="copy-btn" onclick="copyAccount('1002-945-239906')">복사</button>
                                 </div>
                             </div>
                             <!-- 아버지 -->
                             <div class="account-item">
-                                <div class="account-owner">이아빠</div>
+                                <div class="account-owner">김성진</div>
                                 <div class="account-info-row">
                                     <div class="account-bank-number">부산은행 112-2320-7392-03</div>
                                     <button class="copy-btn" onclick="copyAccount('112-2320-7392-03')">복사</button>
@@ -808,7 +931,7 @@
                             </div>
                             <!-- 어머니 -->
                             <div class="account-item">
-                                <div class="account-owner">윤엄마</div>
+                                <div class="account-owner">권자원</div>
                                 <div class="account-info-row">
                                     <div class="account-bank-number">우리은행 1334-567-890123</div>
                                     <button class="copy-btn" onclick="copyAccount('1334-567-890123')">복사</button>
@@ -831,6 +954,7 @@
 
         <div class="footer">
             <div class="footer-text">Thank you</div>
+            <div class="footer-text">Made by Nahyun Kim</div>
         </div>
     </div>
 
