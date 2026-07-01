@@ -552,19 +552,15 @@
             }
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
-        .fade-in {
-            animation: fadeIn 0.8s ease-out;
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         /* 달력 섹션 */
         .calendar-box {
@@ -762,7 +758,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="header fade-in">
+        <div class="header scroll-reveal">
             <div class="header-date">2026. 11. 7. SAT</div>
             <div class="header-names">
                 이연진 <span class="divider">♥</span> 김나현
@@ -774,11 +770,11 @@
             </div>
         </div>
 
-        <div class="main-image">
+        <div class="main-image scroll-reveal">
             <img src="assets/main.jpg" alt="메인 사진">
         </div>
 
-        <div class="invitation-message fade-in">
+        <div class="invitation-message scroll-reveal">
             <div class="invitation-title">초대합니다</div>
             <div class="invitation-text">
                 평생을 함께 걷고 싶은 사람을 만났습니다.<br>
@@ -791,9 +787,9 @@
             </div>
         </div>
 
-        <div class="divider-line"></div>
+        <div class="divider-line scroll-reveal"></div>
 
-        <div class="info-section fade-in">
+        <div class="info-section scroll-reveal">
             <div class="section-title">WEDDING DAY</div>
             <div class="calendar-box">
             <div class="calendar-title">2026년 11월 7일 토요일 <br> 오후 12시 20분</div>
@@ -896,7 +892,7 @@
             </div>
         </div>
 
-        <div class="map-section">
+        <div class="map-section scroll-reveal">
             <div class="section-title">오시는 길</div>
             
             <!-- 지도 서비스 아이콘 -->
@@ -1007,7 +1003,7 @@
             </div>
         </div>
 
-        <div class="gallery-section fade-in">
+        <div class="gallery-section scroll-reveal">
             <div class="section-title">GALLERY</div>
             <div class="gallery-grid">
                 <div class="gallery-item" onclick="openGalleryModal(this)"><img src="assets/gallery/photo1.jpg" alt="갤러리 사진 1"></div>
@@ -1018,7 +1014,7 @@
         </div>
 
         <!-- 계좌 정보 토글 -->
-        <div class="account-section fade-in">
+        <div class="account-section scroll-reveal">
             <div class="section-title">ACCOUNT</div>
             <div class="account-grid">
                 <!-- 신랑측 계좌 정보 -->
@@ -1095,7 +1091,7 @@
             </div>
         </div>
 
-        <div class="share-section">
+        <div class="share-section scroll-reveal">
             <button class="share-btn kakao" id="kakao-share-btn">
                 카카오톡 공유
             </button>
@@ -1301,12 +1297,18 @@
             }, 2500);
         }
 
-        // 페이드인
-        window.addEventListener('load', () => {
-            const elements = document.querySelectorAll('.fade-in');
-            elements.forEach((el, index) => {
-                el.style.animationDelay = `${index * 0.15}s`;
+        // 스크롤 등장 애니메이션
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
             });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            revealObserver.observe(el);
         });
 
         let galleryPhotos = [];
