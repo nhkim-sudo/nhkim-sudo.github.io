@@ -1397,6 +1397,9 @@
 
             const diff = weddingDate - now; // 미래면 +, 지나면 -
 
+            // 한국시간 기준 오늘이 결혼식 당일인지 확인
+            const isWeddingDay = now.toLocaleDateString("en-CA", { timeZone: "Asia/Seoul" }) === "2026-11-07";
+
             const daysEl = document.getElementById("dday-days");
             const hoursEl = document.getElementById("dday-hours");
             const minutesEl = document.getElementById("dday-minutes");
@@ -1417,7 +1420,9 @@
                 minutesEl.textContent = String(minutes).padStart(2, "0");
                 secondsEl.textContent = String(seconds).padStart(2, "0");
 
-                messageEl.innerHTML = `연진 <span class="dday-heart">❤</span> 나현의 결혼식이 <strong>${days}일</strong> 남았습니다.`;
+                messageEl.innerHTML = isWeddingDay
+                    ? `오늘은 연진 <span class="dday-heart">❤</span> 나현의 <strong>결혼식</strong>입니다.`
+                    : `연진 <span class="dday-heart">❤</span> 나현의 결혼식이 <strong>${days}일</strong> 남았습니다.`;
             }
             // 날짜가 지났을 때 (D+)
             else {
@@ -1433,7 +1438,9 @@
                 minutesEl.textContent = String(minutes).padStart(2, "0");
                 secondsEl.textContent = String(seconds).padStart(2, "0");
 
-                messageEl.innerHTML = `연진 <span class="dday-heart">❤</span> 나현의 결혼식이 <strong>+${days}일</strong> 지났습니다.`;
+                messageEl.innerHTML = isWeddingDay
+                    ? `오늘은 연진 <span class="dday-heart">❤</span> 나현의 <strong>결혼식</strong>입니다.`
+                    : `연진 <span class="dday-heart">❤</span> 나현의 결혼식이 <strong>+${days}일</strong> 지났습니다.`;
             }
         }
 
