@@ -306,8 +306,8 @@
 
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
             margin-top: 30px;
         }
 
@@ -335,6 +335,34 @@
             justify-content: center;
             color: var(--secondary);
             font-size: 2rem;
+        }
+
+        .gallery-grid .gallery-item.gallery-extra {
+            display: none;
+        }
+
+        .gallery-grid.expanded .gallery-item.gallery-extra {
+            display: block;
+        }
+
+        .gallery-more-btn {
+            display: none;
+            margin: 20px auto 0;
+            background: transparent;
+            border: 1px solid var(--divider);
+            color: var(--secondary);
+            padding: 10px 24px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Noto Sans KR', sans-serif;
+            border-radius: 2px;
+        }
+
+        .gallery-more-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
         }
 
         /* 계좌 정보 섹션 */
@@ -1091,6 +1119,7 @@
                 <div class="gallery-item" onclick="openGalleryModal(this)"><img src="assets/gallery/photo4.jpg" alt="갤러리 사진 4"></div>
                 <div class="gallery-item" onclick="openGalleryModal(this)"><img src="assets/gallery/photo5.jpg" alt="갤러리 사진 5"></div>
             </div>
+            <button id="gallery-more-btn" class="gallery-more-btn" onclick="expandGallery()">+ 더보기</button>
         </div>
 
         <!-- 계좌 정보 토글 -->
@@ -1110,24 +1139,24 @@
                             <div class="account-item">
                                 <div class="account-owner">이연진</div>
                                 <div class="account-info-row">
-                                    <div class="account-bank-number">IBK기업 287-307201-04-102</div>
-                                    <button class="copy-btn" onclick="copyAccount('287-307201-04-102')">복사</button>
+                                    <div class="account-bank-number">새마을금고 9003-2918-0501-3</div>
+                                    <button class="copy-btn" onclick="copyAccount('9003-2918-0501-3')">복사</button>
                                 </div>
                             </div>
                             <!-- 아버지 -->
                             <div class="account-item">
                                 <div class="account-owner">이윤동</div>
                                 <div class="account-info-row">
-                                    <div class="account-bank-number">KB국민 221702-04-064752</div>
-                                    <button class="copy-btn" onclick="copyAccount('221702-04-064752')">복사</button>
+                                    <div class="account-bank-number">NH농협 149-02-289283</div>
+                                    <button class="copy-btn" onclick="copyAccount('149-02-289283')">복사</button>
                                 </div>
                             </div>
                             <!-- 어머니 -->
                             <div class="account-item">
                                 <div class="account-owner">이해옥</div>
                                 <div class="account-info-row">
-                                    <div class="account-bank-number">KB국민 221252-04-064724</div>
-                                    <button class="copy-btn" onclick="copyAccount('221252-04-064724')">복사</button>
+                                    <div class="account-bank-number">NH농협 352-0982-0861-43</div>
+                                    <button class="copy-btn" onclick="copyAccount('352-0982-0861-43')">복사</button>
                                 </div>
                             </div>
                         </div>
@@ -1154,16 +1183,16 @@
                             <div class="account-item">
                                 <div class="account-owner">김성진</div>
                                 <div class="account-info-row">
-                                    <div class="account-bank-number">부산은행 112-2320-7392-03</div>
-                                    <button class="copy-btn" onclick="copyAccount('112-2320-7392-03')">복사</button>
+                                    <div class="account-bank-number">우리은행 382-006795-02-001</div>
+                                    <button class="copy-btn" onclick="copyAccount('382-006795-02-001')">복사</button>
                                 </div>
                             </div>
                             <!-- 어머니 -->
                             <div class="account-item">
                                 <div class="account-owner">권자원</div>
                                 <div class="account-info-row">
-                                    <div class="account-bank-number">우리은행 1334-567-890123</div>
-                                    <button class="copy-btn" onclick="copyAccount('1334-567-890123')">복사</button>
+                                    <div class="account-bank-number">우리은행 859-07-026042</div>
+                                    <button class="copy-btn" onclick="copyAccount('859-07-026042')">복사</button>
                                 </div>
                             </div>
                         </div>
@@ -1441,6 +1470,21 @@
 
         let galleryPhotos = [];
         let galleryIndex = 0;
+        const GALLERY_PREVIEW_COUNT = 9;
+
+        function initGalleryPreview() {
+            const items = document.querySelectorAll('.gallery-grid .gallery-item');
+            const moreBtn = document.getElementById('gallery-more-btn');
+            items.forEach((item, i) => {
+                if (i >= GALLERY_PREVIEW_COUNT) item.classList.add('gallery-extra');
+            });
+            moreBtn.style.display = items.length > GALLERY_PREVIEW_COUNT ? 'block' : 'none';
+        }
+
+        function expandGallery() {
+            document.querySelector('.gallery-grid').classList.add('expanded');
+            document.getElementById('gallery-more-btn').style.display = 'none';
+        }
 
         function openGalleryModal(item) {
             const items = Array.from(document.querySelectorAll('.gallery-item img'));
@@ -1473,6 +1517,7 @@
 
         let touchStartX = 0;
         document.addEventListener('DOMContentLoaded', function() {
+            initGalleryPreview();
             const modal = document.getElementById('gallery-modal');
             modal.addEventListener('touchstart', function(e) {
                 touchStartX = e.touches[0].clientX;
